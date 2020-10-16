@@ -44,6 +44,11 @@ def get_filename(type, dataset, learning_algorithm):  #function that prevents fi
 
 
 def train_model(learning_algorithm, dataset, hidden_layers, batch_dim, learning_rate, seed):
+    """ function that trains a neural network with tf.keras with automatic differentiation.
+    
+    Keyword arguments:
+    learning_algorithm -- either 'EBP' for error backpropagation (with softmax and cross-entropy loss) or 'BrainProp'
+    dataset -- either 'MNIST' or 'CIFAR10'
 
     save_plots = True
 
@@ -60,8 +65,10 @@ def train_model(learning_algorithm, dataset, hidden_layers, batch_dim, learning_
             test_images = tf.expand_dims(test_images, -1).numpy()
     elif dataset == 'CIFAR10':
         (train_images, train_labels), (test_images, test_labels) = datasets.cifar10.load_data()
+    elif dataset == 'CIFAR100':
+        (train_images, train_labels), (test_images, test_labels) = datasets.cifar100.load_data(label_mode='fine')
     else:
-        raise Exception("Unknown dataset. Choose either \'MNIST\' or \'CIFAR10\'.")
+        raise Exception("Unknown dataset. Choose either \'MNIST\', \'CIFAR10\' or \'CIFAR100\'.")
 
     if tf.reduce_max(train_images) >1:
         train_images = train_images / 255.0
