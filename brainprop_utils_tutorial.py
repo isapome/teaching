@@ -48,7 +48,12 @@ def train_model(learning_algorithm, dataset, hidden_layers, batch_dim, learning_
     
     Keyword arguments:
     learning_algorithm -- either 'EBP' for error backpropagation (with softmax and cross-entropy loss) or 'BrainProp'
-    dataset -- either 'MNIST' or 'CIFAR10'
+    dataset -- either 'MNIST', 'CIFAR10' or 'CIFAR100'
+    hidden_layers -- list of layers for the network (accepts 'Dense(n)', 'Conv2D(n_filters, (ksize_x,ksize_y)' and any other layer with full input)
+    batch_dim -- minibatch size
+    learning_rate -- learning rate used for training
+    seed -- integer, seed used for reproducible results
+    """
 
     save_plots = True
 
@@ -120,8 +125,11 @@ def train_model(learning_algorithm, dataset, hidden_layers, batch_dim, learning_
     for hidden_layer in hidden_layers:
 
         if hidden_layer.__class__.__name__ == 'Dense' and flatten_layer <1:  
-          model.add(layers.Flatten())
-          flatten_layer += 1
+            model.add(layers.Flatten())
+            flatten_layer += 1
+        
+        if hidden_layer.__class__.__name__ == 'Conv2D' and flatten_layer >0:  
+            raise Exception("Please do not add convolutional layers after dense layers.")
 
         config = hidden_layer.get_config()
         layer = layers.deserialize({'class_name': hidden_layer.__class__.__name__, 'config': config})
