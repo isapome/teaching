@@ -8,6 +8,23 @@ import numpy as np
 import datetime
 import os
 
+def import_from_path(module_name, file_path=None):
+    """Import the other python files as modules
+    
+    Keyword arguments:
+    module_name -- the name of the python file (with extension, if file_path is None)
+    file_path -- path to the file if not in the current directory (default: None)
+    """
+    if not file_path:
+        if module_name.endswith('.py'):
+            file_path = module_name
+        else:
+            file_path = module_name + '.py'
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    sys.modules[module_name] = module
+    return importlib.import_module(module_name)
 
 def get_filename(type, dataset, learning_algorithm):  #function that prevents file override
     """Computes the filename for the outputs of the training 
@@ -68,11 +85,14 @@ def train_model(learning_algorithm, dataset, hidden_layers, batch_dim, learning_
     elif learning_algorithm == 'BrainProp':
         output_activation_function = 'linear'
         metric = 'accuracy'
-        if os.path.exists('brainprop.py') != True:
-          ! wget https://github.com/isapome/BrainProp/raw/master/brainprop.py
-        from brainprop import BrainPropLayer, BrainPropLoss
-        loss = BrainPropLoss(batch_size=batch_dim, n_classes=n_classes, replicas=1)
-        output_layer = BrainPropLayer
+        brainprop = import_from_path('brainprop', file_path="brainprop.py")
+        loss = brainprop.BrainPropLoss(batch_size=batch_dim, n_classes=n_classes, replicas=1)
+        output_layer = brainprop.BrainPropLayer
+#         if os.path.exists('brainprop.py') != True:
+#           ! wget https://github.com/isapome/BrainProp/raw/master/brainprop.py
+#         from brainprop import BrainPropLayer, BrainPropLoss
+#         loss = BrainPropLoss(batch_size=batch_dim, n_classes=n_classes, replicas=1)
+#         output_layer = BrainPropLayer
     else:
         raise Exception("Unknown learning algorithm. Choose between \'EBP\' and \'BrainProp\' ")
 
