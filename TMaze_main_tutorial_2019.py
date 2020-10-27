@@ -70,13 +70,13 @@ def experiment(mode, save_weights=False, filename=None):
 
 
 #----Test 3 different pretrained networks: 
-filenames = ['weights_trial_10_noiseless.pkl', 'weights_trial_10_noisy.pkl', 'weights_trial_20_noiseless.pkl']
-corridor_lengths = [10, 10, 20]
-noises = [None, True, None]
-for i in range(len(filenames)):
-    noise = noises[i]
-    corridor_length = corridor_lengths[i]
-    results = experiment('load', filename=filenames[i])
+# filenames = ['weights_trial_10_noiseless.pkl', 'weights_trial_10_noisy.pkl', 'weights_trial_20_noiseless.pkl']
+# corridor_lengths = [10, 10, 20]
+# noises = [None, True, None]
+# for i in range(len(filenames)):
+#     noise = noises[i]
+#     corridor_length = corridor_lengths[i]
+#     results = experiment('load', filename=filenames[i])
 
 #----Train network and save weights (if save_weights==True)
 #seed = 0
