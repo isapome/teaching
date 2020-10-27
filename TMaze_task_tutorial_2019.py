@@ -592,11 +592,11 @@ def train_network(cor_length, alpha, n_trainings, disc_factor, noise=None):
         if (training_iter + 1) % 100 == 0:
             print ('iter', training_iter+1, ' average reward:', (np.round(sum(all_rewards[-100:])/100., 2)))
             
-    plt.scatter(np.arange(n_trainings), all_rewards, lw = 0.05)
-    plt.ylabel('Training iter', fontsize=18)
-    plt.xlabel('Reward', fontsize=18)
-    plt.tick_params(labelsize=14)
-    plt.show()
+#     plt.scatter(np.arange(n_trainings), all_rewards, lw = 0.05)
+#     plt.ylabel('Training iter', fontsize=18)
+#     plt.xlabel('Reward', fontsize=18)
+#     plt.tick_params(labelsize=14)
+#     plt.show()
     return network
 
 
